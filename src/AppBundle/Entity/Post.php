@@ -56,13 +56,33 @@ class Post
         return $this->description;
     }
 
+    public function getStatus()
+    {
+        return $this->status;
+    }
+
+    public function getUpdated_at()
+    {
+        return $this->updated_at;
+    }
+
     public function setDescription($description)
     {
         $this->description = $description;
     }
 
-    public function setUpdated()
+    public function setStatus($status)
     {
-        $this->updated = new \DateTime('now');
+        $this->status = $status;
+    }
+
+    public function setPostedAt()
+    {
+        $this->postedAt = new \DateTime('now');
+    }
+
+    public function setUpdated_at()
+    {
+        $this->updated_at = new \DateTime('now');
     }
 }
