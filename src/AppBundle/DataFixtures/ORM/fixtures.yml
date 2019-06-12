@@ -1,0 +1,7 @@
+AppBundle\Entity\Post:
+    post_{1..100}:
+      title: <text(20)>
+      description: <text(50)>
+      status: <numberBetween(0,1)>
+      postedAt: '<dateTimeBetween("-200 days", "now")>'
+      updated_at: '<dateTimeBetween($postedAt, "now")>'
