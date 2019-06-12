@@ -10,7 +10,6 @@
                     <th>description</th>
                     <th>status</th>
                     <th>Last Update</th>
-                    <th>Action</th>
                 </tr>
             </thead>
             <tbody>
@@ -21,16 +20,20 @@
                     <td> {% if post.status %} Active {% else %} Deactive {% endif %}
                     </td>
                     <td>{{ post.updated_at|date('Y-m-d') }}</td>
-                    <td>
-                        <a href="{{ path('post_view',{
-                            'id':post.id
-                        }) }}">View</a>
-                    </td>
                 </tr>
 
             </tbody>
         </table>
-
+        <h1>Comments</h1>
+        <ul>
+            {% for comment in comments %}
+            <li>
+                # {{ comment.id }} - {{ comment.title }}
+                <p>{{ comment.comment }}</p>
+                <p> {{ comment.email }} - {{ comment.created_at|date("m/d/Y") }}</p>
+            </li>
+            {% endfor %}
+        </ul>
     </div>
 </div>
 {% endblock %} {% block stylesheets %}
