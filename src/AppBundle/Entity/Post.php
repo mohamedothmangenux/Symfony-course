@@ -25,6 +25,16 @@ class Post
      * @ORM\Column(type="text")
      */
     private $description;
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $status;
+
+    /** @ORM\Column(type="datetime", name="posted_at") */
+    private $postedAt;
+
+    /** @ORM\Column(type="datetime") */
+    private $updated_at;
 
     public function getId()
     {
@@ -38,15 +48,41 @@ class Post
 
     public function setTitle($title)
     {
-      $this->title = $title;
+        $this->title = $title;
     }
+
     public function getDescription()
     {
         return $this->description;
     }
-    public function setDescription($description)
+
+    public function getStatus()
     {
-      $this->description = $description;
+        return $this->status;
     }
 
+    public function getUpdated_at()
+    {
+        return $this->updated_at;
+    }
+
+    public function setDescription($description)
+    {
+        $this->description = $description;
+    }
+
+    public function setStatus($status)
+    {
+        $this->status = $status;
+    }
+
+    public function setPostedAt()
+    {
+        $this->postedAt = new \DateTime('now');
+    }
+
+    public function setUpdated_at()
+    {
+        $this->updated_at = new \DateTime('now');
+    }
 }
