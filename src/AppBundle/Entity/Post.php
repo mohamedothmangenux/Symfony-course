@@ -3,9 +3,10 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
 
 /**
- * @ORM\Entity
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\PostRepository")
  * @ORM\Table(name="post")
  */
 class Post
@@ -35,6 +36,17 @@ class Post
 
     /** @ORM\Column(type="datetime") */
     private $updated_at;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
+     * @ORM\OrderBy({"created_at"="DESC"})
+     */
+    private $comments;
+
+    public function __construct()
+    {
+        $this->comments = new ArrayCollection();
+    }
 
     public function getId()
     {
@@ -84,5 +96,13 @@ class Post
     public function setUpdated_at()
     {
         $this->updated_at = new \DateTime('now');
+    }
+
+    /**
+     * Get the value of comments.
+     */
+    public function getComments()
+    {
+        return $this->comments;
     }
 }

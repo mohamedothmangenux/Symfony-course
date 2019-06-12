@@ -1,7 +1,14 @@
 AppBundle\Entity\Post:
-    post_{1..100}:
+    post{1..100}:
       title: <text(20)>
       description: <text(50)>
       status: <numberBetween(0,1)>
       postedAt: '<dateTimeBetween("-200 days", "now")>'
       updated_at: '<dateTimeBetween($postedAt, "now")>'
+AppBundle\Entity\Comment:
+      comment{1..100}:
+        title: <text(10)>
+        comment: <text(50)>
+        email:  <email()>
+        post:  '@post*'
+        created_at: '<dateTimeBetween("-00 days", "now")>'
