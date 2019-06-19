@@ -5,6 +5,7 @@ AppBundle\Entity\Post:
       status: <numberBetween(0,1)>
       postedAt: '<dateTimeBetween("-200 days", "now")>'
       updated_at: '<dateTimeBetween($postedAt, "now")>'
+      category: '@category*'
 AppBundle\Entity\Comment:
       comment{1..100}:
         title: <text(10)>
@@ -12,3 +13,8 @@ AppBundle\Entity\Comment:
         email:  <email()>
         post:  '@post*'
         created_at: '<dateTimeBetween("-00 days", "now")>'
+AppBundle\Entity\Category:
+      category{1..100}:
+        title: <text(10)>
+        createdAt: '<dateTimeBetween("-00 days", "now")>'
+        updatedAt: '<dateTimeBetween("-00 days", "now")>'

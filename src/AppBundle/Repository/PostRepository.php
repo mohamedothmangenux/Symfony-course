@@ -14,7 +14,8 @@ class PostRepository extends EntityRepository
         return $this->createQueryBuilder('post')
             ->andWhere('post.status = :stat')
             ->setParameter('stat', true)
-            ->orderBy('post.postedAt', 'DESC')
+            ->orderBy('post.id', 'DESC')
+            ->setMaxResults(100000000)
             ->getQuery()
             ->execute();
     }

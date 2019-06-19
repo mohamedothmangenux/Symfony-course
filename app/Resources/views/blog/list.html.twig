@@ -2,6 +2,8 @@
 <div id="wrapper">
     <div id="container">
         <table class="table table-striped">
+            <a href="{{ path('admin_blog_new') }}">New Post</a>
+
             <thead>
                 <tr>
                     <th>#</th>
@@ -21,11 +23,14 @@
                     <td>{{ post.description }}</td>
                     <td> {% if post.status %} Active {% else %} Deactive {% endif %}
                     </td>
-                    <td>{{ post.updated_at|date('Y-m-d') }}</td>
+                    <td>{{ post.updated|date('Y-m-d') }}</td>
                     <td>
-                        <a href="{{ path('post_view',{
+                        <a class="btn btn-xs btn-success" href="{{ path('post_view',{
                             'id':post.id
                         }) }}">View</a>
+                        <a href="{{ path('admin_post_edit', {'id': post.id}) }}" class="btn btn-xs btn-success">Edit</a>
+
+
                     </td>
                 </tr>
                 {% endfor %}

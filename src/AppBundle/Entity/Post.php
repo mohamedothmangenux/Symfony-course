@@ -4,6 +4,7 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ORM\Entity(repositoryClass="AppBundle\Repository\PostRepository")
@@ -19,11 +20,13 @@ class Post
     private $id;
 
     /**
+     * @Assert\NotBlank()
      * @ORM\Column(type="string", length=100)
      */
     private $title;
     /**
      * @ORM\Column(type="text")
+     * @Assert\NotBlank()
      */
     private $description;
     /**
@@ -31,17 +34,24 @@ class Post
      */
     private $status;
 
-    /** @ORM\Column(type="datetime", name="posted_at") */
+    /** @ORM\Column(type="date") */
     private $postedAt;
 
     /** @ORM\Column(type="datetime") */
-    private $updated_at;
+    private $updated;
 
     /**
      * @ORM\OneToMany(targetEntity="Comment", mappedBy="post")
      * @ORM\OrderBy({"created_at"="DESC"})
      */
     private $comments;
+
+    /**
+    * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
+    * @ORM\JoinColumn(nullable=false)
+     * @Assert\NotBlank()
+    */
+    private $category;
 
     public function __construct()
     {
@@ -73,9 +83,9 @@ class Post
         return $this->status;
     }
 
-    public function getUpdated_at()
+    public function getUpdated()
     {
-        return $this->updated_at;
+        return $this->updated;
     }
 
     public function setDescription($description)
@@ -88,14 +98,15 @@ class Post
         $this->status = $status;
     }
 
-    public function setPostedAt()
+    public function setPostedAt($postedAt)
     {
-        $this->postedAt = new \DateTime('now');
+        $this->postedAt = $postedAt;
     }
 
-    public function setUpdated_at()
+    public function setUpdated()
     {
-        $this->updated_at = new \DateTime('now');
+        // WILL be saved in the database
+        $this->updated = new \DateTime("now");
     }
 
     /**
@@ -104,5 +115,31 @@ class Post
     public function getComments()
     {
         return $this->comments;
+    }
+
+    /**
+     * Get the value of category
+     */ 
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Set the value of category
+     *
+     * @return  self
+     */ 
+    public function setCategory($category)
+    {
+        $this->category = $category;
+    }
+
+    /**
+     * Get the value of postedAt
+     */ 
+    public function getPostedAt()
+    {
+        return $this->postedAt;
     }
 }

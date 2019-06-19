@@ -30,6 +30,7 @@ framework:
     assets: ~
     php_errors:
         log: true
+    translator:      { fallbacks: ["%locale%"] }
 
 # Twig Configuration
 twig:
@@ -39,6 +40,8 @@ twig:
         decimals:             0
         decimal_point:        .
         thousands_separator:  '-'
+    form_themes:
+        - bootstrap_3_layout.html.twig
 
 # Doctrine Configuration
 doctrine:

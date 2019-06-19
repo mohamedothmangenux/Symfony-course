@@ -1,47 +1,45 @@
 <?php
 
-namespace AppBundle\Controller;
+namespace AppBundle\Controller\admin;
 
+use AppBundle\Form\BlogFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\Post;
 use AppBundle\Entity\Comment;
+use Symfony\Component\HttpFoundation\Request;
 
 class BlogController extends Controller
 {
     /**
-     * @Route("/blog/new", name="blog_new")
+     * @Route("admin/blog/new", name="admin_blog_new")
      */
-    public function newAction()
+    public function newAction(Request $request)
     {
-        $entityManager = $this->getDoctrine()->getManager();
-        $post = new Post();
-        $post->setTitle('Test Title Keyboard');
-        $post->setDescription('Ergonomic and stylish!');
-        $post->setstatus(1);
-        $post->setpostedAt();
-        $post->setupdated_at();
+        $form = $this->createForm(BlogFormType::class);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post = $form->getData();
+            $post->setUpdated();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($post);
+            $em->flush();
 
-        $comment = new Comment();
-        $comment->setTitle('Test Title Keyboard'.rand(1, 99));
-        $comment->setComment('Ergonomic and stylish!'.rand(1, 99));
-        $comment->setEmail('test.'.rand(1, 99).'@gmail.com');
-        $comment->setCreated_at();
-        $comment->setPost($post);
-
-        $entityManager->persist($post);
-        $entityManager->persist($comment);
-        $entityManager->flush();
-
-        return new Response('Saved new post with id '.$post->getId());
+            $this->addFlash('success', 'Post created!');
+            return $this->redirectToRoute('admin_blog_list');
+        }
+       
+        return $this->render('blog/new.html.twig', [
+            'blogform' => $form->createView()
+        ]);
     }
 
     /**
      * Matches /blog exactly.
      *
-     * @Route("/blog", name="blog_list")
+     * @Route("admin/blog", name="admin_blog_list")
      */
     public function listAction()
     {
@@ -55,7 +53,7 @@ class BlogController extends Controller
     }
 
     /**
-     * @Route("/blog/view/{id}", name="post_view")
+     * @Route("/adminblog/view/{id}", name="admin_post_view")
      */
     public function showAction($id)
     {
@@ -75,7 +73,7 @@ class BlogController extends Controller
     }
 
     /**
-     * @Route("/blog/{id}/comments", name="get_comment_post")
+     * @Route("admin/blog/{id}/comments", name="get_comment_post")
      */
     public function getCommentsAction(Post $post)
     {
@@ -93,5 +91,28 @@ class BlogController extends Controller
         ];
 
         return new JsonResponse($data);
+    }
+
+    /**
+     * @Route("/admin/post/{id}/edit", name="admin_post_edit")
+     */
+    public function editAction(Request $request, Post $post)
+    {
+        $form = $this->createForm(BlogFormType::class , $post);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $post = $form->getData();
+            $post->setUpdated();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($post);
+            $em->flush();
+
+            $this->addFlash('success', 'Post Updated!');
+            return $this->redirectToRoute('admin_blog_list');
+        }
+
+        return $this->render('blog/edit.html.twig', [
+            'blogform' => $form->createView()
+        ]);
     }
 }
