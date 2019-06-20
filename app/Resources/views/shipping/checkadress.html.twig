@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h1>Shipping Check Address!</h1>
+
+                    {% if messages.isSuccess is defined  %}
+                        <div class="alert alert-success">
+                            {{ messages.isSuccess  }}
+                        </div>
+                    {% elseif messages.Error is defined %}
+                            <div class="alert alert-danger">
+                                {{ messages.Error  }}
+                            </div>
+                     {% endif %}
+
+
+                {{ form_start(form) }}
+                            {{ form_row(form.FirmName) }}
+                            {{ form_row(form.Apt) }}
+                            {{ form_row(form.Address) }}
+                            {{ form_row(form.City) }}
+                            {{ form_row(form.State) }}
+                            {{ form_row(form.State) }}
+                            {{ form_row(form.Zip5) }}
+                            {{ form_row(form.Zip4) }}
+
+                <button type="submit" class="btn btn-success" formnovalidate>Check Address</button>
+
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
+{% endblock %}

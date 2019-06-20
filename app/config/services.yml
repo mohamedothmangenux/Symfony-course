@@ -41,3 +41,7 @@ services:
         autowire: true
         tags:
             - { name: doctrine.event_subscriber }
+    app.usps_shipping_handler:
+        class: AppBundle\Service\UspsShippingHandler
+        arguments: [true,'720GENUX2722']
+        public: true
