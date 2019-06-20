@@ -14,15 +14,7 @@ class LoginForm extends AbstractType
         $builder
             ->add('_username')
             ->add('_password', PasswordType::class)
-            ->add('roles', ChoiceType::class, [
-                    'multiple' => true,
-                    'expanded' => true, // render check-boxes
-                    'choices' => [
-                        'Admin' => 'ROLE_ADMIN',
-                        'Manager' => 'ROLE_MANAGER',
-                        // ...
-                    ],
-                ])
+
         ;
     }
 }
