@@ -16,6 +16,24 @@
 </head>
 
 <body>
+
+    <nav class="navbar navbar-default">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">
+                    Blog
+                </a>
+            </div>
+            <div class="navbar-right">
+                Welcome {{ app.user ? app.user.email : 'Aquanauts' }}!
+                {% if is_granted('ROLE_USER') %}
+                    <a href="{{ path('security_logout') }}" class="btn btn-danger navbar-btn">Logout</a>
+                {% else %}
+                    <a href="{{ path('security_login') }}" class="btn btn-info navbar-btn">Login</a>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
     {% for msg in app.session.flashBag.get('success') %}
         <div class="alert alert-success">
             {{ msg }}

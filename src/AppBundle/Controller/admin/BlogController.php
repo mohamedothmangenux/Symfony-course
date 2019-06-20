@@ -5,16 +5,20 @@ namespace AppBundle\Controller\admin;
 use AppBundle\Form\BlogFormType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use AppBundle\Entity\Post;
-use AppBundle\Entity\Comment;
 use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+
+/**
+ * @Security("is_granted('ROLE_MANAGE_POSTS')")
+ * @Route("/admin")
+ */
 
 class BlogController extends Controller
 {
     /**
-     * @Route("admin/blog/new", name="admin_blog_new")
+     * @Route("/post/new", name="admin_blog_new")
      */
     public function newAction(Request $request)
     {
@@ -39,7 +43,7 @@ class BlogController extends Controller
     /**
      * Matches /blog exactly.
      *
-     * @Route("admin/blog", name="admin_blog_list")
+     * @Route("/post", name="admin_blog_list")
      */
     public function listAction()
     {
@@ -53,7 +57,7 @@ class BlogController extends Controller
     }
 
     /**
-     * @Route("/adminblog/view/{id}", name="admin_post_view")
+     * @Route("/post/view/{id}", name="admin_post_view")
      */
     public function showAction($id)
     {
@@ -73,7 +77,7 @@ class BlogController extends Controller
     }
 
     /**
-     * @Route("admin/blog/{id}/comments", name="get_comment_post")
+     * @Route("/post/{id}/comments", name="get_comment_post")
      */
     public function getCommentsAction(Post $post)
     {
@@ -94,7 +98,7 @@ class BlogController extends Controller
     }
 
     /**
-     * @Route("/admin/post/{id}/edit", name="admin_post_edit")
+     * @Route("/post/{id}/edit", name="admin_post_edit")
      */
     public function editAction(Request $request, Post $post)
     {

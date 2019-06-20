@@ -4,7 +4,7 @@ AppBundle\Entity\Post:
       description: <text(50)>
       status: <numberBetween(0,1)>
       postedAt: '<dateTimeBetween("-200 days", "now")>'
-      updated_at: '<dateTimeBetween($postedAt, "now")>'
+      updated: '<dateTimeBetween($postedAt, "now")>'
       category: '@category*'
 AppBundle\Entity\Comment:
       comment{1..100}:
@@ -18,3 +18,8 @@ AppBundle\Entity\Category:
         title: <text(10)>
         createdAt: '<dateTimeBetween("-00 days", "now")>'
         updatedAt: '<dateTimeBetween("-00 days", "now")>'
+AppBundle\Entity\User:
+      user_{1..100}:
+        email: mohamed.othman<current()>@gmail.com
+        plainPassword: "123456"
+        roles: ['ROLE_ADMIN']
