@@ -2,20 +2,34 @@
 
 namespace AppBundle\Service;
 
-
-
+/**
+ * Class UspsShippingHandler
+ * @package AppBundle\Service
+ */
 class UspsShippingHandler
 {
-
+    /**
+     * @var userID , testMode
+     */
     private  $userID;
     private  $testMode;
 
+    /**
+     * UspsShippingHandler constructor.
+     * @param bool $testMode
+     * @param $userID
+     */
     public function __construct($testMode = false , $userID)
     {
         $this->userID = $userID;
         $this->testMode = $testMode;
     }
 
+    /**
+     * Function for get rate of shapping
+     * @param $func_params
+     * @return string
+     */
     public function GetRate($func_params){
         try {
 
@@ -40,6 +54,11 @@ class UspsShippingHandler
         }
     }
 
+    /**
+     * function for Address Verify
+     * @param $func_params
+     * @return string
+     */
     public function AddressVerify($func_params)
     {
         try {
