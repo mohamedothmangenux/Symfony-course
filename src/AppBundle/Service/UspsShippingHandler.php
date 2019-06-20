@@ -1,7 +1,8 @@
 <?php
 
 namespace AppBundle\Service;
-
+use USPS\ServiceDeliveryCalculator;
+use USPS\AddressVerify;
 /**
  * Class UspsShippingHandler
  * @package AppBundle\Service
@@ -30,7 +31,7 @@ class UspsShippingHandler
      * @param $func_params
      * @return string
      */
-    public function GetRate($func_params){
+    public function GetRate($func_params , $auth_params){
         try {
 
             if (!isset($func_params)) {
@@ -41,7 +42,7 @@ class UspsShippingHandler
                 }
             }
             // Initiate and set the username provided from usps
-            $delivery = new \USPS\ServiceDeliveryCalculator($this->testMode);
+            $delivery = new ServiceDeliveryCalculator($this->testMode);
             // During test mode this seems not to always work as expected
             $delivery->setTestMode($this->testMode);
             // Add the zip code we want to lookup the city and state
@@ -59,7 +60,7 @@ class UspsShippingHandler
      * @param $func_params
      * @return string
      */
-    public function AddressVerify($func_params)
+    public function AddressVerify($func_params , $auth_params)
     {
         try {
 
@@ -78,7 +79,7 @@ class UspsShippingHandler
                 }
             }
             // Initiate and set the username provided from usps
-            $verify = new \USPS\AddressVerify($this->userID);
+            $verify = new AddressVerify($this->userID);
 
             // During test mode this seems not to always work as expected
             $verify->setTestMode($this->testMode);
