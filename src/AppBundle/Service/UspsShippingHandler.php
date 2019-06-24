@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Service;
+use Symfony\Component\HttpFoundation\Response;
 use USPS\ServiceDeliveryCalculator;
 use USPS\AddressVerify;
 /**
@@ -14,7 +15,7 @@ class UspsShippingHandler
      */
     private  $userID;
     private  $testMode;
-
+    public   $message;
     /**
      * UspsShippingHandler constructor.
      * @param bool $testMode
@@ -48,11 +49,13 @@ class UspsShippingHandler
             // Add the zip code we want to lookup the city and state
             $delivery->addRoute(3,$func_params["zipCode"], $func_params["state"]);
 
-            return $delivery->getServiceDeliveryCalculation();
+            $this->message['Rete'] =  $delivery->getServiceDeliveryCalculation();
 
         }catch (Exception $e) {
-            return 'Caught exception: '. $e->getMessage(). "\n";
+            $this->message['Error'] =  'Caught exception: '. $e->getMessage(). "\n";
         }
+
+        $this->prepareJSONResponseMessage($this->message,"json") ;
     }
 
     /**
@@ -98,14 +101,31 @@ class UspsShippingHandler
 
             // See if it was successful
             if ($verify->isSuccess()) {
-               $message['isSuccess'] = "This IS Valid Address";
+                $this->message = "This IS Valid Address";
             } else {
-                $message['Error'] = 'Error: '.$verify->getErrorMessage();
+                $this->message = 'Error: '.$verify->getErrorMessage();
             }
-            return $message;
+            return $this->prepareJSONResponseMessage($this->message,"json") ;
 
         }catch (Exception $e) {
-           return $message['Error']  = 'Caught exception: '. $e->getMessage(). "\n";
+            $this->message = 'Caught exception: '. $e->getMessage(). "\n";
+            return  $this->prepareJSONResponseMessage($this->message,"json") ;
+        }
+
+
+    }
+    protected function prepareJSONResponseMessage($message, $messageType, $itemsCount = 0, $returnType = 2)
+    {
+        if($returnType == 1)
+        {
+            $response = new Response('{"Message":"'.$messageType.'", "Result":'.$message.', "ItemsCount":"'.$itemsCount.'"}');
+            return $response;
+        }
+        else
+        {//Set the headers for the response
+            $response = new Response('{"Message":"'.$messageType.'", "Result":'.$message.', "ItemsCount":"'.$itemsCount.'"}');
+            $response->headers->set('Content-Type', 'application/json');
+            return $response;
         }
     }
 }

@@ -25,6 +25,9 @@ class ShippingController extends Controller
             $data = $form->getData();
             $usps = $this->get('app.usps_shipping_handler');
             $message = $usps->AddressVerify($data , []);
+
+            dump($message);
+            die;
         }
         return $this->render('shipping/checkadress.html.twig', [
             'form' => $form->createView(),
